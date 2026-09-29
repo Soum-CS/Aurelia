@@ -1,0 +1,37 @@
+hotel_id,name,city,state,address,latitude,longitude,rating,rating_count,phone_number,room_type,price_per_night_inr,rooms_available,available_from,available_to
+HTL001,Jaypee Siddharth - 5 Star Luxury Hotels in Delhi,New Delhi,Delhi,"3, Rajendra Place, New Delhi, Delhi 110008, India",28.6427493,77.1754692,4.2,12283,+91 11 4366 2500,Standard,7900,1,2026-09-01,2026-12-31
+HTL002,Hotel Mayda Inn - A Boutique Hotel,New Delhi,Delhi,"253, near Aerocity, Mahipalpur, New Delhi, Delhi 110037, India",28.5503518,77.1313909,4.3,1090,+91 99996 17164,Deluxe,5400,4,2026-09-01,2026-12-31
+HTL003,Hotel Viva Palace,New Delhi,Delhi,"443, L block, Mahipalpur, New Delhi, Delhi 110037, India",28.5448816,77.1232284,4.1,4803,+91 84489 82320,Standard,4000,11,2026-09-01,2026-12-31
+HTL004,The Leela Palace Bengaluru,Bengaluru,Karnataka,"23, HAL Old Airport Rd, Kodihalli, Bengaluru, Karnataka 560008, India",12.9601447,77.6482546,4.6,37454,+91 80 2521 1234,Standard,10300,10,2026-09-01,2026-12-31
+HTL005,Sterling's Mac Hotel Bengaluru,Bengaluru,Karnataka,"134, HAL Old Airport Rd, Kodihalli, Bengaluru, Karnataka 560017, India",12.9595557,77.6488222,4.2,8527,+91 80 4249 4949,Standard,6700,1,2026-09-01,2026-12-31
+HTL006,The Rialto Hotel,Bengaluru,Karnataka,"20-21, Seshadri Rd, Gandhi Nagar, Bengaluru, Karnataka 560009, India",12.9802311,77.576594,4.2,2635,+91 99455 55000,Deluxe,4300,4,2026-09-01,2026-12-31
+HTL007,The Hydel Park (Business Class Hotel) Chennai,Chennai,Tamil Nadu,"12, VV Koil St, Periamet, Chennai, Tamil Nadu 600003, India",13.0819449,80.2704062,4.7,3593,+91 91769 03442,Standard,7700,9,2026-09-01,2026-12-31
+HTL008,Raj Park Hotel Chennai,Chennai,Tamil Nadu,"180, TTK Rd, Alwarpet, Chennai, Tamil Nadu 600018, India",13.0442894,80.2593333,4.0,5617,+91 44 4225 7777,Suite,4100,4,2026-09-01,2026-12-31
+HTL009,The Madras Grand - Hotel Egmore,Chennai,Tamil Nadu,"1, Chinna St, Egmore, Chennai, Tamil Nadu 600008, India",13.0752551,80.2559244,4.5,1391,+91 93848 81777,Deluxe,6800,13,2026-09-01,2026-12-31
+HTL010,The Park Hotel,Kolkata,West Bengal,"17, Park St, Taltala, Kolkata, West Bengal 700016, India",22.5540974,88.351871,4.4,21257,+91 33 2249 9000,Deluxe,2900,12,2026-09-01,2026-12-31
+HTL011,Viceroy Boutique Hotel Kolkata,Kolkata,West Bengal,"Major Arterial Road, Chinar Park, Kolkata, West Bengal 700136, India",22.6245419,88.4400046,4.0,1403,+91 98310 79293,Deluxe,5400,5,2026-09-01,2026-12-31
+HTL012,Regenta Orkos Kolkata,Kolkata,West Bengal,"621, Prantik Pally Rd, Kasba, Kolkata, West Bengal 700107, India",22.5189517,88.3916791,4.0,6593,+91 33 7125 9999,Deluxe,3600,13,2026-09-01,2026-12-31
+HTL013,Hyderabad Marriott Hotel & Convention Centre,Hyderabad,Telangana,"Tank Bund Rd, opposite Hussain Sagar, Hyderabad, Telangana 500080, India",17.4242848,78.4871452,4.4,21437,+91 40 6652 2999,Standard,6300,2,2026-09-01,2026-12-31
+HTL014,"Regenta Z Sunrise, Gachibowli - Hyderabad",Hyderabad,Telangana,"Masjid Banda Main Rd, Kondapur, Hyderabad, Telangana 500084, India",17.4631725,78.3411941,4.7,731,+91 89898 53636,Standard,7300,6,2026-09-01,2026-12-31
+HTL015,D Consulate Hotel - Hyderabad,Hyderabad,Telangana,"Financial District, Gachibowli, Hyderabad, Telangana 500032, India",17.42672,78.3286393,4.5,324,+91 82975 55577,Deluxe,6600,13,2026-09-01,2026-12-31
+HTL016,Rajasthan Palace - A Heritage Boutique Hotel,Jaipur,Rajasthan,"3, Peelwa Garden, Moti Doongari Road, Jaipur, Rajasthan 302004, India",26.9008788,75.8211361,4.6,3726,+91 70166 62608,Suite,3900,9,2026-09-01,2026-12-31
+HTL017,"Radisson Blu Hotel, Jaipur",Jaipur,Rajasthan,"Airport Plaza, Tonk Rd, Durgapura, Jaipur, Rajasthan 302018, India",26.8424054,75.7939306,4.3,14731,+91 141 669 8888,Suite,4200,2,2026-09-01,2026-12-31
+HTL018,Jaipur Hotel New - A heritage hotel,Jaipur,Rajasthan,"7, Chaura Rasta Rd, Nehru Bazar, Jaipur, Rajasthan 302003, India",26.9173908,75.8204605,4.3,842,+91 98286 76825,Deluxe,7500,14,2026-09-01,2026-12-31
+HTL019,Hilton Goa Resort,Goa,Goa,"Pilerne - Candolim Rd, Candolim, Goa 403515, India",15.5198827,73.7940285,4.5,3467,+91 832 664 9800,Deluxe,10900,12,2026-09-01,2026-12-31
+HTL020,The Astor Goa,Goa,Goa,"22/7, Bammon Vaddo, Candolim, Bardez, Goa 403515, India",15.5098782,73.7722733,4.8,972,+91 832 675 0000,Standard,6600,11,2026-09-01,2026-12-31
+HTL021,"Holiday Inn Resort Goa, an IHG Hotel",Goa,Goa,"Mobor Beach, Cavelossim, Velim, Goa 403731, India",15.1588848,73.9479622,4.7,15601,+91 832 662 6000,Deluxe,9200,2,2026-09-01,2026-12-31
+HTL022,Sheraton Grand Pune Bund Garden Hotel,Pune,Maharashtra,"Raja Bahadur Motilal Rd, Bund Garden, Pune, Maharashtra 411001, India",18.529933,73.8713461,4.5,15998,+91 20 6641 1111,Standard,5100,7,2026-09-01,2026-12-31
+HTL023,Pride Premier Pune,Pune,Maharashtra,"5, University Rd, Shivajinagar, Pune, Maharashtra 411005, India",18.5311376,73.8472878,4.5,11235,+91 73910 44142,Suite,5400,11,2026-09-01,2026-12-31
+HTL024,"Lemon Tree Hotel Chinchwad, Pune",Pune,Maharashtra,"Survey No. 31, Pimpri Chinchwad, Pune, Maharashtra 411033, India",18.6249251,73.7762306,4.0,4443,+91 20 6132 0000,Deluxe,5200,6,2026-09-01,2026-12-31
+HTL025,"The Oberoi Amarvilas, Agra",Agra,Uttar Pradesh,"Taj East Gate Rd, Tajganj, Agra, Uttar Pradesh 282001, India",27.1680032,78.0490121,4.7,5101,+91 562 223 1515,Deluxe,10400,11,2026-09-01,2026-12-31
+HTL026,"ITC Mughal, a Luxury Collection Resort & Spa, Agra",Agra,Uttar Pradesh,"Fatehabad Road, Tajganj, Agra, Uttar Pradesh 282001, India",27.1607661,78.0439462,4.7,20626,+91 562 402 1700,Standard,8800,10,2026-09-01,2026-12-31
+HTL027,Radisson Hotel Agra,Agra,Uttar Pradesh,"C-1, Fatehabad Rd, Taj Nagri Phase 2, Agra, Uttar Pradesh 282004, India",27.1586978,78.0536513,4.6,24499,+91 562 233 3333,Deluxe,14800,9,2026-09-01,2026-12-31
+HTL028,Forte Kochi,Kochi,Kerala,"1/373, Princess St, Fort Kochi, Kochi, Kerala 682001, India",9.9667865,76.2426326,4.5,1324,+91 484 270 4800,Deluxe,9400,3,2026-09-01,2026-12-31
+HTL029,"Radisson Blu Hotel, Kochi",Kochi,Kerala,"Sahodaran Ayyappan Rd, Elamkulam, Kochi, Kerala 682020, India",9.9675888,76.3072613,4.3,12912,+91 484 412 9999,Suite,6800,5,2026-09-01,2026-12-31
+HTL030,Novotel Kochi Infopark,Kochi,Kerala,"Kakkanad, Kochi, Kerala 682030, India",10.0154115,76.3627169,4.5,8896,+91 484 676 6666,Deluxe,8700,11,2026-09-01,2026-12-31
+HTL031,Four Seasons Hotel Mumbai,Mumbai,Maharashtra,"1/136, Dr Elijah Moses Rd, Worli, Mumbai, Maharashtra 400018, India",18.993915,72.8200655,4.5,15421,+91 22 6982 8000,Standard,10800,4,2026-09-01,2026-12-31
+HTL032,Grand Hyatt Mumbai Hotel & Residences,Mumbai,Maharashtra,"Bandra Kurla Complex, Mumbai, Maharashtra 400055, India",19.0768916,72.851122,4.5,28486,+91 22 6676 1234,Deluxe,6000,7,2026-09-01,2026-12-31
+HTL033,Radisson Hotel Mumbai Andheri MIDC,Mumbai,Maharashtra,"MIDC Central Rd, Andheri East, Mumbai, Maharashtra 400093, India",19.1175169,72.8649065,4.5,7676,+91 22 5005 0123,Standard,9800,4,2026-09-01,2026-12-31
+HTL034,Swosti Premium,Bhubaneswar,Odisha,"P1, Jaydev Vihar, Nandankanan Rd, Bhubaneswar, Odisha 751013, India",20.3040675,85.8231421,4.4,16122,+91 80 6591 1981,Deluxe,5200,11,2026-09-01,2026-12-31
+HTL035,Swosti Grand,Bhubaneswar,Odisha,"Janpath Rd, near Railway Station, Bhubaneswar, Odisha 751001, India",20.2697413,85.841736,4.4,7771,+91 80 6591 1981,Suite,6600,15,2026-09-01,2026-12-31
+HTL036,Hotel Sushree International,Bhubaneswar,Odisha,"Kalyani Nagar Rd, Patrapada, Bhubaneswar, Odisha 751019, India",20.242791,85.7708979,4.7,813,+91 97770 34134,Deluxe,6900,5,2026-09-01,2026-12-31

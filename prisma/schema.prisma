@@ -1,0 +1,473 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Hotel {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  city        String
+  country     String
+  address     String
+  latitude    Float
+  longitude   Float
+  tagline     String
+  description String
+  rating      Float
+  reviewCount Int
+  amenities   String
+  artSeed     Int
+  featured    Boolean  @default(false)
+  faq         String   @default("[]")
+  localTips   String   @default("[]")
+  weather     String   @default("{}")
+  roomTypes   RoomType[]
+  wishlistedBy Wishlist[]
+  reviews     Review[]
+  restaurant  Restaurant?
+  experiences Experience[]
+  createdAt   DateTime @default(now())
+}
+
+model RoomType {
+  id             String    @id @default(cuid())
+  hotelId        String
+  hotel          Hotel     @relation(fields: [hotelId], references: [id])
+  name           String
+  description    String
+  basePrice      Float
+  capacity       Int
+  sizeSqm        Int
+  bedType        String
+  view           String
+  amenities      String
+  accessibilityFeatures String @default("[]")
+  scene          String
+  unitsAvailable Int       @default(4)
+  bookings       Booking[]
+}
+
+model User {
+  id           String          @id @default(cuid())
+  token        String          @unique
+  displayName  String?
+  email        String?         @unique
+  passwordHash String?
+  createdAt    DateTime        @default(now())
+  wishlist     Wishlist[]
+  bookings     Booking[]
+  preference   UserPreference?
+  notifications Notification[]
+}
+
+model Wishlist {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  hotelId     String
+  hotel       Hotel    @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+  priceAtSave Float
+  createdAt   DateTime @default(now())
+
+  @@unique([userId, hotelId])
+}
+
+model Booking {
+  id            String   @id @default(cuid())
+  code          String   @unique
+  roomTypeId    String?
+  roomType      RoomType? @relation(fields: [roomTypeId], references: [id])
+  hotelName     String?
+  roomName      String?
+  guestPhone    String?
+  rooms         Int     @default(1)
+  pricePerNight Float?
+  paymentProvider String?
+  paymentOrderId  String? @unique
+  billOrderId     String? @unique // unified-bill Razorpay order (kept separate
+                                  // from the room-payment order id)
+  paymentId       String?
+  paymentStatus   String?
+  userId        String?
+  user          User?    @relation(fields: [userId], references: [id])
+  guestName     String
+  guestEmail    String
+  checkIn       DateTime
+  checkOut      DateTime
+  nights        Int
+  guests        Int
+  addons        String   @default("[]")
+  subtotal      Float
+  taxesFees     Float
+  total         Float
+  // currency provenance: internal amounts are USD; INR snapshot at booking
+  currency          String  @default("USD")
+  totalInr          Float?
+  inrRateUsed       Float?
+  // provider provenance: which inventory source fulfilled this booking
+  provider          String  @default("aurelia-demo")
+  providerBookingId String?
+  destinationLabel  String?
+  status        String   @default("CONFIRMED")
+  preArrival    String   @default("{}")
+  roomNumber    String?
+  checkedInAt   DateTime?
+  checkedOutAt  DateTime?
+  // My Aurelia Stay extensions
+  itinerary     String   @default("[]") // JSON StayDay[]
+  hotelId       String?  // resolved Prisma Hotel for stay services (dining etc.)
+  createdAt     DateTime @default(now())
+  serviceRequests ServiceRequest[]
+  review        Review?
+  restaurantOrders FoodOrder[]
+  experienceBookings ExperienceBooking[]
+  wallet        WalletTransaction[]
+  invoices      Invoice[]
+}
+
+model SearchHistory {
+  id        String   @id @default(cuid())
+  userId    String?
+  query     String
+  latitude  Float?
+  longitude Float?
+  resultCount Int    @default(0)
+  source    String   @default("demo")
+  createdAt DateTime @default(now())
+}
+
+model ServiceRequest {
+  id        String   @id @default(cuid())
+  bookingId String
+  booking   Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  kind      String
+  title     String
+  detail    String?
+  price     Float    @default(0)
+  status    String   @default("OPEN")
+  priority  String   @default("NORMAL")
+  photoUrl  String?
+  createdAt DateTime @default(now())
+}
+
+model Review {
+  id             String   @id @default(cuid())
+  hotelId        String
+  hotel          Hotel    @relation(fields: [hotelId], references: [id])
+  bookingId      String?  @unique
+  booking        Booking? @relation(fields: [bookingId], references: [id])
+  authorName     String
+  cleanliness    Int
+  staff          Int
+  comfort        Int
+  valueForMoney  Int
+  locationScore  Int
+  text           String
+  sentimentScore Float
+  flagged        Boolean  @default(false)
+  createdAt      DateTime @default(now())
+}
+
+/* ── My Aurelia Stay: hotel dining ──────────────────────────────────── */
+
+model Restaurant {
+  id          String   @id @default(cuid())
+  // Exactly one anchor: a Prisma property record, or a stable external key
+  // ("csv:<dataset id>") for bookings whose hotel lives in the configured
+  // dataset instead of the catalog. Demo kitchens provisioned this way are
+  // always labeled dataProvenance="demo".
+  hotelId     String?  @unique
+  hotel       Hotel?   @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+  hotelKey    String   @unique
+  name        String
+  cuisine     String
+  summary     String
+  hours       String   @default("{}") // JSON {breakfast,lunch,dinner}
+  // provenance: "demo" menus are explicitly labeled in every surface
+  dataProvenance String @default("demo")
+  categories  MenuCategory[]
+  menuItems   MenuItem[]
+  createdAt   DateTime @default(now())
+}
+
+model MenuCategory {
+  id           String @id @default(cuid())
+  restaurantId String
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  name         String
+  sortOrder    Int    @default(0)
+  items        MenuItem[]
+
+  @@unique([restaurantId, name])
+}
+
+model MenuItem {
+  id            String  @id @default(cuid())
+  restaurantId  String
+  restaurant    Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  categoryId    String
+  category      MenuCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  name          String
+  description   String
+  priceInr      Int
+  // VEG | NON_VEG | VEGAN | EGG
+  diet          String  @default("VEG")
+  calories      Int?
+  allergens     String  @default("[]") // JSON string[]
+  ingredients   String?
+  prepMinutes   Int     @default(20)
+  spiceLevel    Int     @default(0) // 0–3
+  proteinG      Int?
+  tags          String  @default("[]") // JSON ["spicy","healthy","high-protein","kids","jain","low-cal"]
+  addons        String  @default("[]") // JSON {name,priceInr}[]
+  imageEmoji    String  @default("🍽️")
+  available     Boolean @default(true)
+  sortOrder     Int     @default(0)
+  orderItems    FoodOrderItem[]
+}
+
+/* ── Food ordering & tracking ───────────────────────────────────────── */
+
+model FoodOrder {
+  id               String   @id @default(cuid())
+  code             String   @unique // AUR-10482 style
+  bookingId        String
+  booking          Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  userId           String?
+  hotelId          String
+  status           String   @default("CONFIRMED") // CONFIRMED PREPARING READY ON_THE_WAY DELIVERED CANCELLED
+  scheduledFor     DateTime?
+  deliveryLocation String   @default("Room service")
+  notes            String?
+  subtotalInr      Int
+  taxInr           Int      @default(0)
+  serviceChargeInr Int      @default(0)
+  totalInr         Int
+  paymentStatus    String   @default("CHARGED_TO_ROOM")
+  timeline         String   @default("{}") // JSON {STATUS: isoString}
+  etaMinutes       Int      @default(30)
+  walletTxnId      String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  items            FoodOrderItem[]
+}
+
+model FoodOrderItem {
+  id            String    @id @default(cuid())
+  orderId       String
+  order         FoodOrder @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  menuItemId    String
+  menuItem      MenuItem? @relation(fields: [menuItemId], references: [id])
+  name          String
+  unitPriceInr  Int
+  qty           Int
+  addons        String    @default("[]") // JSON {name,priceInr}[]
+  lineTotalInr  Int
+}
+
+/* ── Local experience marketplace ───────────────────────────────────── */
+
+model Experience {
+  id           String  @id @default(cuid())
+  hotelId      String?
+  hotel        Hotel?   @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+  // stable anchor: prisma hotel id or "csv:<dataset id>" (non-unique — a
+  // property has many experiences)
+  hotelKey     String
+  name         String
+  category     String // attraction museum beach shopping restaurants cafes activities events tours transportation
+  description  String
+  distanceKm   Float
+  durationHours Float?
+  priceInr     Int?
+  rating       Float?
+  meetingPoint String?
+  available    Boolean @default(true)
+  emoji        String  @default("📍")
+  bookings     ExperienceBooking[]
+}
+
+model ExperienceBooking {
+  id           String     @id @default(cuid())
+  code         String     @unique
+  bookingId    String
+  booking      Booking    @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  experienceId String
+  experience   Experience @relation(fields: [experienceId], references: [id])
+  userId       String?
+  when         DateTime?
+  guests       Int        @default(2)
+  priceInr     Int        @default(0)
+  status       String     @default("BOOKED") // BOOKED CANCELLED COMPLETED
+  createdAt    DateTime   @default(now())
+}
+
+/* ── Notifications, wallet, personalization, invoices ───────────────── */
+
+model Notification {
+  id        String    @id @default(cuid())
+  userId    String?
+  user      User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bookingId String?
+  type      String // checkin checkout food service activity system
+  title     String
+  body      String
+  href      String?
+  dedupeKey String    @unique // stable key so derived reminders are stored once
+  readAt    DateTime?
+  createdAt DateTime  @default(now())
+}
+
+model WalletTransaction {
+  id        String  @id @default(cuid())
+  bookingId String
+  booking   Booking @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  ref       String  @unique
+  category  String // ROOM FOOD SERVICES SPA LAUNDRY ACTIVITIES TRANSPORTATION OTHER
+  label     String
+  amountInr Int
+  taxInr    Int     @default(0)
+  status    String  @default("PENDING") // PENDING PAID REFUNDED
+  source    String // BOOKING FOOD_ORDER SERVICE_REQUEST EXPERIENCE MANUAL
+  sourceId  String?
+  rateLive  Boolean @default(true) // USD→INR conversion provenance for room charges
+  createdAt DateTime @default(now())
+}
+
+model UserPreference {
+  id                String  @id @default(cuid())
+  userId            String  @unique
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  foodPrefs         String  @default("[]") // JSON ["vegetarian","vegan","jain","spicy","healthy","high-protein","low-cal"]
+  cuisines          String  @default("[]")
+  roomPrefs         String  @default("[]")
+  bedPreference     String?
+  temperatureC      Int?
+  interests         String  @default("[]")
+  budgetPerNightInr Int?
+  allergies         String  @default("[]")
+  checkinTime       String?
+  checkoutTime      String?
+  updatedAt         DateTime @updatedAt
+}
+
+model Invoice {
+  id            String   @id @default(cuid())
+  bookingId     String   @unique
+  booking       Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  number        String   @unique
+  payload       String // JSON unified bill sections
+  grandTotalInr Int
+  issuedAt      DateTime @default(now())
+}
+
+/* ── Third-party map notes (e.g. LocusMap imports) ──────────────────── */
+
+// Lifecycle: IMPORTED → NEEDS_VERIFICATION → VERIFIED | LOCATION_MISMATCH → RESOLVED | REJECTED
+model MapNote {
+  id                      String    @id @default(cuid())
+  noteId                  String    @unique // external ID, e.g. "5210539"
+  source                  String // e.g. LocusMap
+  authorName              String    @default("anonymous")
+  description             String // the note's claimed place — NEVER treated as fact
+  latitude                Float
+  longitude               Float
+  reverseGeocodedAddress  String?
+  country                 String?
+  state                   String?
+  district                String?
+  city                    String?
+  verificationStatus      String    @default("NEEDS_VERIFICATION")
+  resolutionReason        String?
+  correctedLatitude       Float?
+  correctedLongitude      Float?
+  verifiedAt              DateTime?
+  verifiedBy              String?
+  createdAt               DateTime  @default(now())
+  updatedAt               DateTime  @updatedAt
+}
+
+/* ── Razorpay webhook events (idempotency ledger) ───────────────────── */
+
+model PaymentEvent {
+  id          String   @id @default(cuid())
+  eventId     String   @unique // razorpay event.id — same event never applies twice
+  type        String // payment.captured | payment.failed | refund.created | …
+  paymentId   String?
+  orderId     String?
+  bookingCode String?
+  payload     String   @default("{}")
+  processedAt DateTime @default(now())
+}
+
+/* ── Airport transfers & location services ──────────────────────────── */
+
+model AirportTransfer {
+  id             String    @id @default(cuid())
+  code           String    @unique // e.g. TRF-10293
+  bookingId      String?
+  hotelId        String
+  type           String    // PICKUP | DROP
+  airportCode    String    // e.g. BLR, BOM, DEL
+  airportName    String
+  flightNumber   String?
+  scheduledTime  DateTime
+  passengers     Int       @default(2)
+  vehicleType    String    // SEDAN | LUXURY_SUV | EXECUTIVE_VAN
+  priceInr       Int
+  status         String    @default("CONFIRMED") // CONFIRMED | DISPATCHED | COMPLETED | CANCELLED
+  paymentStatus  String    @default("PAID")      // PENDING | PAID | ROOM_BILL
+  paymentOrderId String?
+  paymentId      String?
+  guestName      String
+  guestPhone     String
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
+/* ── Loyalty & Rewards program ──────────────────────────────────────── */
+
+model LoyaltyAccount {
+  id             String    @id @default(cuid())
+  userId         String?   @unique
+  guestEmail     String    @unique
+  tier           String    @default("EXPLORER") // EXPLORER | VOYAGER | ELITE | SIGNATURE
+  points         Int       @default(0)
+  lifetimePoints Int       @default(0)
+  transactions   RewardTransaction[]
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
+model RewardTransaction {
+  id          String    @id @default(cuid())
+  accountId   String
+  account     LoyaltyAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  points      Int       // positive for accrual, negative for redemption
+  reason      String    // BOOKING_REWARD | FOOD_REWARD | STAY_REWARD | REFERRAL | REDEMPTION
+  bookingCode String?
+  ref         String    @unique
+  expiresAt   DateTime?
+  createdAt   DateTime  @default(now())
+}
+
+/* ── Digital Room Key ───────────────────────────────────────────────── */
+
+model DigitalKey {
+  id          String    @id @default(cuid())
+  bookingId   String    @unique
+  keyToken    String    @unique
+  roomNumber  String
+  guestName   String
+  validFrom   DateTime
+  validUntil  DateTime
+  isActive    Boolean   @default(true)
+  lastUsedAt  DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}

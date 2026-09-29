@@ -1,26 +1,303 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f6f1e8;
+  --surface: #fffdf8;
+  --surface-raised: #ffffff;
+  --ink: #211b13;
+  --muted: #6f6353;
+  --line: #e6dcc9;
+  --accent: #a5763f;
+  --accent-strong: #7d582c;
+  --on-accent: #fff9ef;
+  --pine: #2f4a38;
+  --gold: #c9a25e;
+  --shadow-color: 31 27 22;
+}
+
+.dark {
+  --background: #15120d;
+  --surface: #1e1913;
+  --surface-raised: #262017;
+  --ink: #efe7d8;
+  --muted: #a39681;
+  --line: #33291d;
+  --accent: #c99f63;
+  --accent-strong: #dfba82;
+  --on-accent: #1d1509;
+  --pine: #9dbfa4;
+  --gold: #d9b678;
+  --shadow-color: 0 0 0;
 }
 
 @theme inline {
   --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-surface: var(--surface);
+  --color-raised: var(--surface-raised);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-on-accent: var(--on-accent);
+  --color-pine: var(--pine);
+  --color-gold: var(--gold);
+  --font-display: var(--font-fraunces), Georgia, serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 }
 
 body {
   background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  color: var(--ink);
+  font-family: var(--font-sans);
+  transition:
+    background-color 0.35s ease,
+    color 0.35s ease;
+}
+
+::selection {
+  background: var(--gold);
+  color: #1d1509;
+}
+
+@layer components {
+  .container-x {
+    @apply mx-auto w-full max-w-6xl px-5 sm:px-8;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 1.25rem;
+    box-shadow:
+      0 1px 2px rgb(var(--shadow-color) / 0.05),
+      0 16px 40px -24px rgb(var(--shadow-color) / 0.25);
+  }
+
+  .card-hover {
+    transition:
+      transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 0.35s ease;
+  }
+
+  .card-hover:hover {
+    transform: translateY(-4px);
+    border-color: color-mix(in srgb, var(--accent) 38%, var(--line));
+    box-shadow:
+      0 2px 4px rgb(var(--shadow-color) / 0.06),
+      0 28px 56px -24px rgb(var(--shadow-color) / 0.35);
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    @apply inline-flex cursor-pointer items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium tracking-wide transition-all duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-strong) 100%);
+    color: var(--on-accent);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    font-weight: 600;
+    box-shadow: 0 8px 20px -10px rgb(var(--shadow-color) / 0.45);
+  }
+
+  .btn-primary:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow:
+      0 12px 26px -12px rgb(var(--shadow-color) / 0.55),
+      inset 0 1px 0 color-mix(in srgb, #ffffff 22%, transparent);
+  }
+
+  .btn-primary:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  .btn-secondary {
+    border: 1px solid var(--line);
+    background: transparent;
+    color: var(--ink);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+
+  .btn-secondary:hover {
+    background: var(--surface-raised);
+    border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+  }
+
+  .input {
+    @apply w-full rounded-xl border bg-transparent px-4 py-3 text-sm outline-none transition-all;
+    border-color: var(--line);
+    color: var(--ink);
+  }
+
+  .input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 16%, transparent);
+    background: var(--surface-raised);
+  }
+
+  .label {
+    @apply mb-1.5 block text-xs font-semibold tracking-[0.12em] uppercase;
+    color: var(--muted);
+  }
+
+  .eyebrow {
+    @apply text-xs font-semibold tracking-[0.22em] uppercase;
+    color: var(--accent);
+  }
+
+  /* soft glass surface — used sparingly over imagery */
+  .glass {
+    background: color-mix(in srgb, var(--surface) 72%, transparent);
+    backdrop-filter: blur(14px) saturate(1.15);
+    -webkit-backdrop-filter: blur(14px) saturate(1.15);
+    border: 1px solid color-mix(in srgb, var(--line) 80%, transparent);
+  }
+
+  .chip {
+    @apply inline-flex cursor-pointer items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-xs font-semibold tracking-wide transition-all duration-200;
+    border-color: var(--line);
+    color: var(--muted);
+  }
+
+  .chip:hover {
+    background: var(--surface-raised);
+    color: var(--ink);
+  }
+
+  .chip[aria-pressed="true"],
+  .chip[data-active="true"] {
+    background: var(--accent);
+    border-color: transparent;
+    color: var(--on-accent);
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* scroll-triggered reveal (paired with <Reveal>) */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .animate-fade-up {
+    animation: none;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+
+.skeleton {
+  border-radius: 0.75rem;
+  background: linear-gradient(
+    100deg,
+    var(--line) 40%,
+    var(--surface-raised) 50%,
+    var(--line) 60%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* ── Print: receipts & invoices only ────────────────────────────────── */
+@media print {
+  :root {
+    --background: #ffffff;
+    --surface: #ffffff;
+    --ink: #1a1a1a;
+    --muted: #555555;
+    --line: #d8d8d8;
+  }
+
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  /* hide everything, then reveal the printable subtree */
+  body.printing-invoice * {
+    visibility: hidden !important;
+    box-shadow: none !important;
+    animation: none !important;
+    transition: none !important;
+  }
+
+  body.printing-invoice [data-print],
+  body.printing-invoice [data-print] * {
+    visibility: visible !important;
+  }
+
+  body.printing-invoice [data-print] {
+    position: absolute !important;
+    inset: 0 auto auto 0;
+    width: 100%;
+    max-width: none;
+    padding: 0 !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .card {
+    box-shadow: none !important;
+    border-color: #ddd !important;
+  }
 }

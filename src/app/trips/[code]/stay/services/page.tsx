@@ -1,0 +1,38 @@
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import type { Metadata } from "next";
+import { db } from "@/lib/db";
+import { ServicesPanel } from "@/components/stay/services-panel";
+
+interface PageProps {
+  params: Promise<{ code: string }>;
+}
+
+export const dynamic = "force-dynamic";
+export async function generateMetadata(): Promise<Metadata> {
+  return { title: "Hotel services · My Stay" };
+}
+
+export default async function ServicesPage({ params }: PageProps) {
+  const { code } = await params;
+  const booking = await db.booking.findUnique({
+    where: { code: decodeURIComponent(code) },
+    select: { code: true, hotelName: true },
+  });
+  if (!booking) notFound();
+
+  return (
+    <div className="container-x pt-8 pb-4">
+      <nav aria-label="Breadcrumb" className="mb-6 text-sm" style={{ color: "var(--muted)" }}>
+        <Link href={`/trips/${booking.code}`} className="hover:text-accent transition-colors">My Aurelia Stay</Link>
+        <span aria-hidden className="mx-2">/</span>
+        <span style={{ color: "var(--ink)" }}>Hotel services</span>
+      </nav>
+      <header className="mb-6">
+        <p className="eyebrow">Hotel services</p>
+        <h1 className="font-display mt-2 text-3xl font-semibold sm:text-4xl">Anything for the room?</h1>
+      </header>
+      <ServicesPanel bookingCode={booking.code} />
+    </div>
+  );
+}
